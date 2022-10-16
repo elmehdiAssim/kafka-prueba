@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: local
+server:
+  port: 8081
+topics:
+  retry: 'user-topic.RETRY'
+  dlt: 'user-topic.DLT'
+
+---
+spring:
+  profiles: local
+  kafka:
+    template:
+      default-topic: 'user-topic'
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: user-listener-group
+    producer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    data-username: sa
+    data-password:
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
